@@ -5,7 +5,7 @@ const router = require("./controllers/users.js");
 app.use(express.json()); 
 app.use(express.urlencoded({ entended: true })); 
 
-app.set("port", process.env.PORT || 2000); 
+app.set("port", process.env.PORT || 2001); 
 
 
 // Routers
