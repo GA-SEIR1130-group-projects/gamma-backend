@@ -1,0 +1,21 @@
+[
+    {
+        "username": "Anderson",
+        "password": "password"
+    },
+    {
+        "username": "Fred",
+        "password": "password"
+    },
+    {
+        "username": "Miles",
+        "password": "Whats good bitch",
+        "desc": "i have all the power here"
+    },
+    {
+        "username": "Batman",
+        "password": "imBatman",
+        "desc": "because im batman"
+    }
+] 
+
