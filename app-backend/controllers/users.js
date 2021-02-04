@@ -22,6 +22,12 @@ router.get("/users", (req, res, next) => {
         .catch(next)
 })
 
+router.post("/users", (req, res, next) => {
+    User.create(req.body)
+        .then(obj => res.json(obj))
+        .catch(next)
+})
+
 router.get("/users/:id", (req, res, next) => {
     User.findById(req.params.id)
         .then(obj => res.json(obj))
