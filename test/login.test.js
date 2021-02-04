@@ -1,7 +1,7 @@
 const should = require("chai").should()
 const expect = require("chai").expect
 const supertest = require("supertest")
-const api = supertest("localhost:2001/api")
+const api = supertest("https://finsta-v2.herokuapp.com/api")
 
 describe("GET /users", () => {
     it("should return a 200 response", done => {
