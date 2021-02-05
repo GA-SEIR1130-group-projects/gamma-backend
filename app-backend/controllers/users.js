@@ -8,7 +8,11 @@ router.get("/home", (req, res) => {
     res.send("Home page")
 })
 
-router.get("/admin", (req, res, next) => {
+router.get("/dashboard", authUser, (req, res) => {
+    res.send("dashboard page")
+})
+
+router.get("/admin", authUser, (req, res, next) => {
     res.send("Filler text, welcome to the Admin page")
 })
 
