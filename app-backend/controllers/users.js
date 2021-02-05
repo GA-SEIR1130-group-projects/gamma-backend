@@ -8,7 +8,11 @@ router.get("/home", (req, res) => {
     res.send("Home page")
 })
 
-router.get("/admin", (req, res, next) => {
+router.get("/dashboard", authUser, (req, res) => {
+    res.send("dashboard page")
+})
+
+router.get("/admin", authUser, (req, res, next) => {
     res.send("Filler text, welcome to the Admin page")
 })
 
@@ -19,6 +23,12 @@ router.get("/users", (req, res, next) => {
         .then(obj => {
             res.render("user", obj)
         })
+        .catch(next)
+})
+
+router.post("/users", (req, res, next) => {
+    User.create(req.body)
+        .then(obj => res.json(obj))
         .catch(next)
 })
 
