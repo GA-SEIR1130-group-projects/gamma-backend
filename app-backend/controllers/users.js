@@ -25,10 +25,33 @@ router.post("/users", (req, res, next) => {
         .catch(next)
 })
 
-router.post("/users/login", (req, res, next) => {
-    user.findOne({username: req.body.username})
-        .then(obj => res.json(obj))
-        next()   
+router.post("/users/login", async (req, res, next) => {
+    try {const founduser = await user.findOne({
+        username: req.body.username
+    })
+    console.log(founduser)
+    if (!founduser) {
+        res.status(500).json({
+            message: "username or password is not valid"
+        })
+    }
+
+    else {
+        if (founduser.password == req.body.password) {
+            res.json({
+                data: founduser,
+                message: `welcome back ${founduser.firstname}`
+            })
+        }
+        else {
+            res.status(500).json({
+                message: "username or password is incorrect"
+            })
+        }
+    }}
+    catch(err) {
+        next(err)
+    }
 })
 
 
