@@ -1,4 +1,0 @@
-mongodb+srv://finsta-cluster:BXN30f3UzPqq348x@cluster0.6zzg5.mongodb.net/finsta-cluster?retryWrites=true&w=majority
-
-username = finsta-cluster
-password = BXN30f3UzPqq348x
