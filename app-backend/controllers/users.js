@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const bcrypt = require("bcrypt")
-const { authUser, authRole }  = require("../Auth/basicAuth")
+const { authUser, authRole }  = require("../authentication/basicAuth")
 
 const user = require("../models/user-model")
 
@@ -18,40 +18,107 @@ router.get("/admin", authUser, (req, res, next) => {
 
 })
 
-router.post("/users", (req, res, next) => {
-    user.create(req.body)
-        .then(obj => res.json(obj))
-        .then(() => res.redirect("/dashboard"))
-        .catch(next)
+
+
+// user schema CRUD -------------------------------------------------------------------
+
+
+router.get("/users",  async (req, res, next) => {
+    try {
+        const allUsers = await user.find({})
+
+        res.json(allUsers);
+    }
+    catch(err) {
+        next(err)
+    }
 })
 
-router.post("/users/login", (req, res, next) => {
-    user.findOne({username: req.body.username})
-        .then(obj => res.json(obj))
-        next()   
+router.get("/users/:id", async (req, res, next) => {
+    try {
+        const foundUser = await user.findById(req.params.id)
+
+        res.json(foundUser);
+    } 
+    catch(err) {
+        next(err)
+    }
 })
 
 
-router.get("/users",  (req, res, next) => {
-    user.find({})
-        .then(obj => res.json(obj))
-        .then(obj => {
-            res.render("user", obj)
-        })
-        .catch(next)
-        console.log(req.users)
+
+router.post("/users", async (req, res, next) => {
+    try {
+        const newUser = user.create(req.body)
+
+        res.json(newUser)
+    }
+    catch(err) {
+        next(err);
+    }
 })
 
-router.get("/users/:id", (req, res, next) => {
-    user.findById(req.params.id)
-        .then(obj => res.json(obj))
-        .then(obj => {
-            res.render("user", obj)
+router.post("/users/login", async (req, res, next) => {
+    try {const founduser = await user.findOne({
+        username: req.body.username
+    })
+    console.log(founduser)
+    if (!founduser) {
+        res.status(500).json({
+            message: "username or password is not valid"
         })
-        .catch(err => {
-            console.log("there has been an error" + err)
-            res.send("bad id")
+    }
+
+    else {
+        if (founduser.password == req.body.password) {
+            res.json({
+                data: founduser,
+                message: `welcome back ${founduser.firstname}`
+            })
+        }
+        else {
+            res.status(500).json({
+                message: "username or password is incorrect"
+            })
+        }
+    }}
+    catch(err) {
+        next(err)
+    }
+})
+
+
+router.put("/users/:id", async (req, res, next) => {
+    try {
+        const updatedUser = await user.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true}
+        )
+
+        res.json({
+            data: updatedUser,
+            message: `${updatedUser.username} was just updated`
         })
+    }
+    catch(err){
+        next(err)
+    }
+})
+
+
+router.delete("/users/:id", async (req, res, next) => {
+    try {
+        const deletedUser = await user.findByIdAndDelete(req.params.id)
+
+        res.json({
+            data: deletedUser,
+            message: `${deletedUser.username} was deleted`
+        })
+    }
+    catch(err){
+        next(err)
+    }
 })
 
 
