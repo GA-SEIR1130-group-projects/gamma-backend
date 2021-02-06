@@ -1,11 +1,12 @@
 const express = require("express")
 const router = express.Router()
-const { authUser, authRole }  = require("../authentication/basicAuth.js");
+const bcrypt = require("bcrypt")
+const { authUser, authRole }  = require("../Auth/basicAuth")
 
-const User = require("../models/user-model.js");
+const user = require("../models/user-model")
 
 router.get("/home", (req, res) => {
-    res.send("Home page")
+    res.send("homepage here")
 })
 
 router.get("/dashboard", authUser, (req, res) => {
@@ -14,26 +15,35 @@ router.get("/dashboard", authUser, (req, res) => {
 
 router.get("/admin", authUser, (req, res, next) => {
     res.send("Filler text, welcome to the Admin page")
+
+})
+
+router.post("/users", (req, res, next) => {
+    user.create(req.body)
+        .then(obj => res.json(obj))
+        .then(() => res.redirect("/dashboard"))
+        .catch(next)
+})
+
+router.post("/users/login", (req, res, next) => {
+    user.findOne({username: req.body.username})
+        .then(obj => res.json(obj))
+        next()   
 })
 
 
-router.get("/users", (req, res, next) => {
-    User.find({})
+router.get("/users",  (req, res, next) => {
+    user.find({})
         .then(obj => res.json(obj))
         .then(obj => {
             res.render("user", obj)
         })
         .catch(next)
-})
-
-router.post("/users", (req, res, next) => {
-    User.create(req.body)
-        .then(obj => res.json(obj))
-        .catch(next)
+        console.log(req.users)
 })
 
 router.get("/users/:id", (req, res, next) => {
-    User.findById(req.params.id)
+    user.findById(req.params.id)
         .then(obj => res.json(obj))
         .then(obj => {
             res.render("user", obj)
@@ -43,5 +53,6 @@ router.get("/users/:id", (req, res, next) => {
             res.send("bad id")
         })
 })
+
 
 module.exports = router
