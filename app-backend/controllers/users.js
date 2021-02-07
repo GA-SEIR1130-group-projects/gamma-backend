@@ -61,6 +61,22 @@ router.post("/users", async (req, res, next) => {
     }
 })
 
+router.post("/users/:id", async (req, res, next) => {
+    try {
+        const newImage = user.create({
+            images: [
+                req.body
+            ]
+        })
+
+        res.redirect(`/users/:${req.params.id}`)
+    }
+    catch(err) {
+        next(err)
+    }
+})
+
+
 router.post("/users/login", async (req, res, next) => {
     try {const founduser = await user.findOne({
         username: req.body.username
