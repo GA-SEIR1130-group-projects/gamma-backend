@@ -9,8 +9,7 @@ const imageSchema = new mongoose.Schema(
     {
         url: String,
         comments: Array
-    },
-    { timestamps: true}
+    }
 )
 
 const userSchema = new mongoose.Schema(
