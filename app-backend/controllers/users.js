@@ -34,8 +34,6 @@ router.get("/users",  async (req, res, next) => {
     }
 })
 
-
-
 router.get("/users/:id", async (req, res, next) => {
     try {
         const foundUser = await user.findById(req.params.id)
@@ -87,17 +85,6 @@ router.post("/users/login", async (req, res, next) => {
             })
         }
     }}
-    catch(err) {
-        next(err)
-    }
-})
-
-router.get("/users/login",  async (req, res, next) => {
-    try {
-        const allUsers = await user.find({})
-
-        res.json(allUsers);
-    }
     catch(err) {
         next(err)
     }
