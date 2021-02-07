@@ -51,7 +51,10 @@ router.post("/users", async (req, res, next) => {
     try {
         const newUser = user.create(req.body)
 
-        res.json(newUser)
+        res.json({
+            data: req.body,
+            message: `${req.body.username} created!`
+        })
     }
     catch(err) {
         next(err);
