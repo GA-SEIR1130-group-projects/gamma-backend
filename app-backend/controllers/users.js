@@ -130,14 +130,22 @@ router.delete("/users/:id", async (req, res, next) => {
 // subSchema CRUD -----------------------------------------------------------------
 
 
-router.get("/users/:id/images", async (req, res, next) => {
+router.post("/users/:id/images", async (req, res, next) => {
     try {
-        const user = user.findById(req.params.id)
-            .then(res => {
-                return res.images
-            })
-
-        res.json(user)
+        user.findById(req.params.id)
+            .then(
+                user.create(
+                    {
+                        ...req.body,
+                        images: [
+                            {
+                                url: req.body.images.url,
+                                comments: req.body.images.comments
+                            }
+                        ]
+                    }
+                )
+            )
     }
     catch(err) {
         next(err)
