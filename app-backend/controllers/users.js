@@ -20,7 +20,7 @@ router.get("/admin", authUser, (req, res, next) => {
 
 
 
-// user schema CRUD -------------------------------------------------------------------
+// userSchema CRUD -------------------------------------------------------------------
 
 
 router.get("/users",  async (req, res, next) => {
@@ -58,21 +58,6 @@ router.post("/users", async (req, res, next) => {
     }
     catch(err) {
         next(err);
-    }
-})
-
-router.post("/users/:id", async (req, res, next) => {
-    try {
-        const newImage = user.create({
-            images: [
-                req.body
-            ]
-        })
-
-        res.redirect(`/users/:${req.params.id}`)
-    }
-    catch(err) {
-        next(err)
     }
 })
 
@@ -139,6 +124,26 @@ router.delete("/users/:id", async (req, res, next) => {
         next(err)
     }
 })
+
+
+
+// subSchema CRUD -----------------------------------------------------------------
+
+
+router.get("/users/:id/images", async (req, res, next) => {
+    try {
+        const user = user.findById(req.params.id)
+            .then(res => {
+                return res.images
+            })
+
+        res.json(user)
+    }
+    catch(err) {
+        next(err)
+    }
+})
+
 
 
 module.exports = router
