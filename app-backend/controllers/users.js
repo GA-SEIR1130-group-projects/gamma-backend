@@ -20,7 +20,7 @@ router.get("/admin", authUser, (req, res, next) => {
 
 
 
-// user schema CRUD -------------------------------------------------------------------
+// userSchema CRUD -------------------------------------------------------------------
 
 
 router.get("/users",  async (req, res, next) => {
@@ -60,6 +60,7 @@ router.post("/users", async (req, res, next) => {
         next(err);
     }
 })
+
 
 router.post("/users/login", async (req, res, next) => {
     try {const founduser = await user.findOne({
@@ -123,6 +124,30 @@ router.delete("/users/:id", async (req, res, next) => {
         next(err)
     }
 })
+
+
+
+// Push new images into images array -----------------------------------------------------------------
+
+
+router.put("/users/:id/images", async (req, res, next) => {
+    try {
+        const updatedUser = await user.findByIdAndUpdate(
+            req.params.id, 
+            { $push: {images: req.body}}, 
+            { new: true}
+        )
+
+        res.json({
+            data: updatedUser,
+            message: `${updatedUser.username} was just updated`
+        })
+    }
+    catch(err) {
+        next(err)
+    }
+})
+
 
 
 module.exports = router
