@@ -127,7 +127,7 @@ router.delete("/users/:id", async (req, res, next) => {
 
 
 
-// subSchema CRUD -----------------------------------------------------------------
+// Push new images into images array -----------------------------------------------------------------
 
 
 router.put("/users/:id/images", async (req, res, next) => {
