@@ -130,22 +130,18 @@ router.delete("/users/:id", async (req, res, next) => {
 // subSchema CRUD -----------------------------------------------------------------
 
 
-router.post("/users/:id/images", async (req, res, next) => {
+router.put("/users/:id/images", async (req, res, next) => {
     try {
-        user.findById(req.params.id)
-            .then(
-                user.create(
-                    {
-                        ...req.body,
-                        images: [
-                            {
-                                url: req.body.images.url,
-                                comments: req.body.images.comments
-                            }
-                        ]
-                    }
-                )
-            )
+        const updatedUser = await user.findByIdAndUpdate(
+            req.params.id, 
+            { $push: {images: req.body}}, 
+            { new: true}
+        )
+
+        res.json({
+            data: updatedUser,
+            message: `${updatedUser.username} was just updated`
+        })
     }
     catch(err) {
         next(err)
