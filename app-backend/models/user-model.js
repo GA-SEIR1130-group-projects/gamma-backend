@@ -4,7 +4,7 @@ const crypto = require("crypto")
 // const jwt = require("jsonwebtoken")
 // const secret = require("../config").secret
 
-const imageSchema =  require('./image-model')
+const imageSchema =  require('./imageSchema')
 
 
 const userSchema = new mongoose.Schema(
@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema(
         username: {
             type: String,
             required: [true, "can't be blank"],
-            lowercase: true,
             unique: true
         },
         password: {

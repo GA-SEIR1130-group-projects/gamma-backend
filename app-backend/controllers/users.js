@@ -134,7 +134,12 @@ router.put("/users/:id/images", async (req, res, next) => {
     try {
         const updatedUser = await user.findByIdAndUpdate(
             req.params.id, 
-            { $push: {images: req.body}}, 
+            { $push: 
+                {
+                    url: req.body.url,
+                    comment: req.body.comment
+                }
+            }, 
             { new: true}
         )
 

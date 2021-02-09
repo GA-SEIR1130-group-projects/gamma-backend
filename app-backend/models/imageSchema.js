@@ -6,8 +6,8 @@ const imageSchema = mongoose.Schema(
         url: {
             type: String
         },
-        comments: {
-            type: Array
+        comment: {  
+            type: String
         }
     }
 )
