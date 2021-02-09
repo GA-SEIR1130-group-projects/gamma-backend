@@ -132,14 +132,11 @@ router.delete("/users/:id", async (req, res, next) => {
 
 router.put("/users/:id/images", async (req, res, next) => {
     try {
+        let obj = { url: req.body.url, comment: req.body.comment }
+
         const updatedUser = await user.findByIdAndUpdate(
             req.params.id, 
-            { $push: 
-                {
-                    url: req.body.url,
-                    comment: req.body.comment
-                }
-            }, 
+            { $push: { images: obj }}, 
             { new: true}
         )
 
